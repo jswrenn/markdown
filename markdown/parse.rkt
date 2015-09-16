@@ -447,8 +447,8 @@
 (define $explicit-link
   (try (pdo (label <- $chars-in-brackets)
             ;; NO $spnl here. Unlike reference links.
-            (src+tit <- $source+title)
-            (return (cons label src+tit)))))
+            (src+tit <- (chars-in-balanced #\( #\)))
+            (return `(,label ,src+tit)))))
 
 ;; Tries to parse as a reference link. Even if successful, returns
 ;; enough pices of the original input that it can be recontructed.
@@ -489,13 +489,12 @@
   (pdo (x <- $explicit-link)
        (return
         (match x
-         [(list label src title)
+         [(list label src)
           (define xs (parameterize ([ignore-inline-links? #t])
                        (normalize-xexprs
                         (parse-result (many $inline) label))))
-          (match title
-            ["" `(a ([href ,src])           ,@xs)]
-            [t  `(a ([href ,src][title ,t]) ,@xs)])]))))
+          (match ""
+            ["" `(a ([href ,src])           ,@xs)])]))))
 
 (define $link/reference
   (pdo (x <- $reference-link)
