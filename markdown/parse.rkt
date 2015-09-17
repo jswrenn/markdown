@@ -12,6 +12,7 @@
          racket/string
          rackjure/threading
          xml/xexpr
+         sugar
          "entity.rkt"
          "html.rkt"
          "parsack.rkt"
@@ -494,7 +495,7 @@
                        (normalize-xexprs
                         (parse-result (many $inline) label))))
           (match ""
-            ["" `(a ([href ,src])           ,@xs)])]))))
+            ["" `(a ([,(remove-ext href) ,src])           ,@xs)])]))))
 
 (define $link/reference
   (pdo (x <- $reference-link)
