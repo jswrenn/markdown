@@ -495,7 +495,7 @@
                        (normalize-xexprs
                         (parse-result (many $inline) label))))
           (match ""
-            ["" `(a ([,href ,src])           ,@xs)])]))))
+            ["" `(a ([href ,src])           ,@xs)])]))))
 
 (define $link/reference
   (pdo (x <- $reference-link)
